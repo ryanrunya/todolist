@@ -1,0 +1,69 @@
+<div class="container">
+	<table class="table table-striped">
+		<thead class="thead-light">
+			<tr>
+				<th>Status</th>
+				<th>Name</th>
+				<th>Note</th>
+				<th>Due_date</th>
+				<th>Details</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @lists.each do |f| %>
+				<tr>
+					<% if f.done %>
+						<td>
+						<%= link_to complete_list_path(f), method: :patch do %>
+						V
+						<% end %>
+					<% else %>
+						<td>
+						<%= link_to complete_list_path(f), method: :patch do %>
+						O
+						<% end %>
+					<% end %> 
+					
+					</td><td>
+						<%= f.name %>
+					</td><td>
+						<%= f.note %>
+					</td><td>
+						<%= f.due_date %>
+					</td><td>
+						<%= link_to 'List', edit_list_path(f) %>
+					</td>
+					<% if f.due_date && Time.now.to_date <= f.due_date %>
+						<td>
+							<%= link_to 'Destroy', list_path(f), method: :delete, data:{ confirm: "Are you sure?"} %>
+						</td>
+					<%else%>
+						<td>
+							Expired
+						</td>
+					<%end%>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+	<div style="margin-top:100px" class="col-sm-offset-2 col-sm-8 form-horizontal" >
+		<%= form_for @lists.build do |f| %>
+			<div class="form-group">
+				<%= f.label :name, "Name", class:"col-sm-2" %>
+				<%= f.text_field :name, class:"col-sm-8"%>
+			</div>		
+			<div class="form-group">
+				<%= f.label :note,  "Note", class:"col-sm-2"%>
+				<%= f.text_area :note, class:"col-sm-8"%>
+			</div>
+			<div class="form-group">
+				<%= f.label :due_date,  "Due_date", class:"col-sm-2"%>
+				<%= f.text_field :due_date, class:"col-sm-8"%>
+			</div>
+			<%= f.submit class:"btn btn-info"%>
+		<%end%> 
+	</div>
+</div>
+	
+
